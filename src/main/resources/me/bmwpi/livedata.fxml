@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.bmwpi.controller.LiveDataController">
+   <children>
+      <ToolBar prefHeight="55.0" prefWidth="1280.0">
+        <items>
+          <Button mnemonicParsing="false" onAction="#switchToMainPage" prefHeight="40.0" text="&lt; Menu">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Button>
+        </items>
+      </ToolBar>
+      <FlowPane alignment="CENTER" hgap="30.0" layoutY="50.0" prefHeight="350.0" prefWidth="1280.0">
+         <children>
+            <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Circle fill="DODGERBLUE" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Label text="RPM" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" layoutX="550.0" layoutY="76.0" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Circle fill="DODGERBLUE" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Label text="Boost Pressure" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" layoutX="665.0" layoutY="76.0" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <HBox prefHeight="100.0" prefWidth="200.0" spacing="15.0">
+                     <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" stroke="BLACK" strokeType="INSIDE" width="75.0" />
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="200.0" stroke="BLACK" strokeType="INSIDE" width="75.0" />
+                     </children>
+                  </HBox>
+                  <Label text="Oil Temp - Coolant Temp" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" layoutX="780.0" layoutY="76.0" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Circle fill="DODGERBLUE" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Label text="Engine Load" />
+               </children>
+            </VBox>
+            <VBox alignment="CENTER" layoutX="896.0" layoutY="76.0" prefHeight="200.0" prefWidth="100.0">
+               <children>
+                  <Circle fill="DODGERBLUE" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
+                  <Label text="Fuel Cons" />
+               </children>
+            </VBox>
+         </children>
+      </FlowPane>
+   </children>
+</AnchorPane>
