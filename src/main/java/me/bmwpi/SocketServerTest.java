@@ -10,17 +10,16 @@ public class SocketServerTest {
         ServerSocket serverSocket = new ServerSocket(PORT);
         Socket socket = serverSocket.accept();
         System.out.println("Client " + socket.getInetAddress() + " is connected");
-        DataInputStream dataIn = new DataInputStream(socket.getInputStream());
-        DataOutputStream dataOut = new DataOutputStream(socket.getOutputStream());
-        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
 
+        System.out.println("Waiting for client...");
         String in = "", out = "";
         while (!in.equals("Stop")) {
-            in = dataIn.readUTF();
+            in = bufferedReader.readLine();
             System.out.println("Message from client: " + in);
-            out = bufferedReader.readLine();
+            /*out = bufferedReader.readLine();
             dataOut.writeUTF(out);
-            dataOut.flush();
+            dataOut.flush();*/
         }
     }
 }

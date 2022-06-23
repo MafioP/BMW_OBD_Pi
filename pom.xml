@@ -41,7 +41,7 @@
                         <!-- Usage: mvn clean javafx:run -->
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>me.bmwpi.App</mainClass>
+                            <mainClass>me.bmwpi.BMW_Pi_Main</mainClass>
                         </configuration>
                     </execution>
                 </executions>
