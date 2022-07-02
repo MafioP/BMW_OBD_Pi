@@ -17,9 +17,15 @@ public class BMW_Pi_Main extends Application {
 
     @Override
     public void start(Stage stage) throws IOException {
-        scene = new Scene(loadFXML("mainpage"), 1280, 400);
+        Parent loader = loadFXML("mainpage");
+        scene = new Scene(loader, 1280, 400);
         stage.setScene(scene);
         stage.show();
+    }
+
+    @Override
+    public void stop() throws Exception {
+        System.out.println("Stop!");
     }
 
     public static void setRoot(String fxml) throws IOException {

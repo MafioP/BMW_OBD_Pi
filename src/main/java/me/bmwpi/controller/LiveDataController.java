@@ -1,41 +1,94 @@
 package me.bmwpi.controller;
 
-import java.io.IOException;
-
+import eu.hansolo.medusa.Gauge;
+import javafx.fxml.FXML;
+import javafx.scene.layout.VBox;
 import me.bmwpi.BMW_Pi_Main;
+import me.bmwpi.model.PidGauges;
 import me.bmwpi.model.PidModel;
 
-/*TODO
-        Run python script
-        Handle connection to socket server
-        Read data from socket
-        Update pidList in model
-        Read from pid list and display in various gauges
-     */
-public class LiveDataController {
-    private final PidModel model;
-    private final ScriptHandler scriptHandler;
-    private final SocketHandler socketHandler;
-    private final Thread socketThread;
-    private final Thread scriptThread;
+import java.io.IOException;
 
-    public LiveDataController() throws IOException {
+public class LiveDataController {
+    private PidModel model;
+    private ScriptHandler scriptHandler;
+    private SocketHandler socketHandler;
+    private Thread socketThread;
+    private Thread scriptThread;
+
+    @FXML
+    private VBox rpmVBox;
+    @FXML
+    private VBox coolTempVBox;
+    @FXML
+    private VBox oilTempVBox;
+    @FXML
+    private VBox boostVBox;
+
+
+    public void initialize() {
         System.out.println("Controller created");
+        model = setModel();
+        setGauges();
+        handleScript();
+    }
+
+    public PidModel setModel() {
         model = new PidModel();
+        return model;
+    }
+
+    private void handleScript() {
+        Thread stopLiveDataThread = new Thread(() -> {
+            try {
+                stopHandlers();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        });
+        Runtime.getRuntime().addShutdownHook(stopLiveDataThread);
         socketHandler = new SocketHandler(model);
         socketThread = new Thread(socketHandler);
+        socketThread.setDaemon(true);
         socketThread.start();
         scriptHandler = new ScriptHandler();
         scriptThread = new Thread(scriptHandler);
+        scriptThread.setDaemon(true);
         scriptThread.start();
-
     }
 
-    public void switchToMainPage() throws IOException {
-        scriptHandler.stopScript();
+    private void stopHandlers() throws IOException {
         socketHandler.stopSocket();
         socketThread.interrupt();
+        scriptHandler.stopScript();
         scriptThread.interrupt();
+    }
+    public void switchToMainPage() throws IOException {
+        stopHandlers();
         BMW_Pi_Main.setRoot("mainpage");
     }
+
+    public void setGauges() {
+        Gauge rpmGauge = PidGauges.getRpmGauge();
+        rpmVBox.getChildren().add(rpmGauge);
+        rpmGauge.valueProperty().bind(model.rpmProperty());
+
+        Gauge coolantGauge = PidGauges.getCoolantTempGauge();
+        coolTempVBox.getChildren().add(coolantGauge);
+        coolantGauge.valueProperty().bind(model.coolantTempProperty());
+
+        /*Gauge oilTempGauge = PidGauges.getOilTempGauge();
+        oilTempVBox.getChildren().add(oilTempGauge);
+        oilTempGauge.valueProperty().bind(model.oilTempProperty());*/
+
+        Gauge airInTempGauge = PidGauges.getIntakeTempGauge();
+        oilTempVBox.getChildren().add(airInTempGauge);
+        airInTempGauge.valueProperty().bind(model.airInTempProperty());
+
+        Gauge boostGauge = PidGauges.getBoostGauge();
+        boostVBox.getChildren().add(boostGauge);
+        boostGauge.valueProperty().bind(model.boostPressureProperty());
+    }
+
+
 }

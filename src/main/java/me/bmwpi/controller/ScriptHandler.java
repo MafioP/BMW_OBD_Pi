@@ -10,13 +10,20 @@ public class ScriptHandler implements Runnable{
             pyProcess.redirectErrorStream(true);
             pyProcess.inheritIO();
             process = pyProcess.start();
+            long pid = process.pid();
+            System.out.println("PID: " + pid + " on " + System.getProperty("os.name"));
+
         } catch (Exception e) {
             System.err.println(e);
         }
     }
 
     public void stopScript() {
+
         try {
+            long pid = process.pid();
+            System.out.println("KILL PID: " + pid + " on " + System.getProperty("os.name"));
+            //Runtime.getRuntime().exec("taskkill /f /PID " + pid);
             process.destroy();
         } catch (Exception e) {
             System.err.println(e);

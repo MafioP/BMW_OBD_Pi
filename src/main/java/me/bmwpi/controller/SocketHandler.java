@@ -9,7 +9,8 @@ import java.net.Socket;
 public class SocketHandler implements Runnable{
     private final PidModel model;
     private final int PORT = 4000;
-    private boolean stop = false;
+    private boolean stop;
+    ServerSocket serverSocket = null;
 
     public SocketHandler(PidModel model) {
         this.model = model;
@@ -19,7 +20,6 @@ public class SocketHandler implements Runnable{
     @Override
     public void run() {
         System.out.println("Start socket");
-        ServerSocket serverSocket = null;
         try {
             serverSocket = new ServerSocket(PORT);
         } catch (IOException e) {
@@ -34,19 +34,29 @@ public class SocketHandler implements Runnable{
 
             System.out.println("Waiting for client...");
             String in = "", out = "";
-            while (!stop) {
-                in = inputBufferedReader.readLine();
-                System.out.println("Message from client: " + in);
+            while (!serverSocket.isClosed()) {
+                if (inputBufferedReader.ready()) {
+                    in = inputBufferedReader.readLine();
+                    parseData(in);
+                    System.out.println("Message from client: " + in);
+                }
             }
+            outputBufferedWriter.write("exit");
             System.out.println("Exiting server");
-            outputBufferedWriter.write(-1);
 
         } catch (Exception e) {
             System.err.println(e);
         }
     }
 
-    public void stopSocket() {
-        stop = true;
+    public void stopSocket() throws IOException {
+        serverSocket.close();
+    }
+
+    public void parseData(String in) {
+        String[] split = in.split(":");
+        if (split.length > 1) {
+            model.setPid(split[0], split[1]);
+        }
     }
 }
