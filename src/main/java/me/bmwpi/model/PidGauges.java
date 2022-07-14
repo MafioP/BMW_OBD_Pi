@@ -7,7 +7,8 @@ import eu.hansolo.medusa.TickMarkType;
 import javafx.scene.paint.Color;
 
 public class PidGauges {
-    private static final int ANIM_DURATION = 100;
+    private static final int ANIM_DURATION = (int)(Settings.getDELAY()*1000);
+
     public static Gauge getRpmGauge() {
         return GaugeBuilder.create().title("Engine RPM").prefSize(250,250).skinType(Gauge.SkinType.GAUGE)
                 .animated(true).animationDuration(ANIM_DURATION).maxValue(6000).tickMarkSectionsVisible(true).minorTickMarksVisible(true).mediumTickMarksVisible(false)

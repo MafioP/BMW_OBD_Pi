@@ -25,4 +25,9 @@ public class MainPageController {
     private void switchToTravelMode() throws IOException {
         BMW_Pi_Main.setRoot("travelmode");
     }
+
+    @FXML
+    private void switchToSettings() throws IOException {
+        BMW_Pi_Main.setRoot("settings");
+    }
 }

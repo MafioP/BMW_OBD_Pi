@@ -11,6 +11,14 @@ import java.io.IOException;
 /**
  * JavaFX App
  */
+
+/*TODO
+    Improve communication with script:
+         -dynamic update of pidList
+         -flag to select mode
+         -flag to select delay
+ */
+
 public class BMW_Pi_Main extends Application {
 
     private static Scene scene;

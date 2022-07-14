@@ -4,15 +4,14 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 
-
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.bmwpi.controller.MainPageController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="1280.0" stylesheets="@styles.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="me.bmwpi.controller.MainPageController">
    <children>
       <HBox alignment="CENTER" layoutY="50.0" prefHeight="300.0" prefWidth="1280.0" spacing="75.0">
          <children>
             <Button mnemonicParsing="false" onAction="#switchToLiveData" prefHeight="200.0" prefWidth="200.0" text="Live Data" />
             <Button mnemonicParsing="false" onAction="#switchToTravelMode" prefHeight="200.0" prefWidth="200.0" text="Travel Mode" />
             <Button mnemonicParsing="false" prefHeight="200.0" prefWidth="200.0" text="Button" />
-            <Button mnemonicParsing="false" prefHeight="200.0" prefWidth="200.0" text="Button" />
+            <Button mnemonicParsing="false" onAction="#switchToSettings" prefHeight="200.0" prefWidth="200.0" text="Settings" />
          </children>
       </HBox>
    </children>

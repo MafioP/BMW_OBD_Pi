@@ -4,28 +4,20 @@ import serial
 import socket
 import time
 import platform
+import sys
+
 # PID list
 pidList = [
     '0C',  # RPM
     '05',  # Coolant Temperature
     '0F',  # Intake Air Temperature
-    '0B'    # Intake manifold pressure
+    '0B'  # Intake manifold pressure
 ]
 HOST = "Localhost"
 PORT = 4000
-DELAY = 0.1
+DELAY = float(sys.argv[1])
 SERIALNAME = ''
-MODE = 2
-# Connect to serial port COM1
-if platform.system().startswith('Win'):
-    SERIALNAME = 'COM1'
-else:
-    SERIALNAME = '/dev/tty0'
-if MODE != 2:
-    ser = serial.Serial(SERIALNAME, 9600, bytesize=8,
-                    parity=serial.PARITY_EVEN,
-                    stopbits=serial.STOPBITS_ONE)
-    print(ser)
+MODE = int(sys.argv[2])
 
 
 def checksum(data):
@@ -76,8 +68,8 @@ def getCoolantTemp(data):
 
 
 def getIntakePressure(data):
-    boost = int(data[4:], base=16)*0.01
-    return "boost:"+str(boost)
+    boost = int(data[4:], base=16) * 0.01
+    return "boost:" + str(boost)
 
 
 # Analise
@@ -86,7 +78,7 @@ def parseData(response):
     pid = response[8 + size - 2:10 + size - 2]  # pid is located at [address](6)+[length](2)+[data](size)-2
     response = response[18:]
     print("Evaluable data: " + response)
-    print("Data size = " + str(size/2))
+    print("Data size = " + str(size / 2))
     print("Requested PID: " + pid)
     data = response[8:8 + size]
     print("Actual data: " + data)
@@ -137,7 +129,7 @@ def mainLoop():
                 val3 = "airInTemp:" + str(random.randint(-20, 100))
                 client_socket.send(str.encode(val3 + ":\n"))
                 time.sleep(DELAY)
-                val4 = "boost:" + str(random.randint(0, 300)*0.01)
+                val4 = "boost:" + str(random.randint(0, 300) * 0.01)
                 client_socket.send(str.encode(val4 + ":\n"))
                 time.sleep(DELAY)
         except KeyboardInterrupt:
@@ -174,6 +166,16 @@ def exit_handler():
 
 
 if __name__ == '__main__':
+    # Connect to serial port COM1
+    if platform.system().startswith('Win'):
+        SERIALNAME = 'COM1'
+    else:
+        SERIALNAME = '/dev/tty0'
+    if MODE != 2:
+        ser = serial.Serial(SERIALNAME, 9600, bytesize=8,
+                            parity=serial.PARITY_EVEN,
+                            stopbits=serial.STOPBITS_ONE)
+        print(ser)
     client_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     atexit.register(exit_handler)
     mainLoop()

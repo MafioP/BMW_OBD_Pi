@@ -1,3 +1,21 @@
-#anchorLiveData{
+.root {
     -fx-background-color: rgb(50,50,50);
+    -fx-focus-color: transparent;
+    -fx-faint-focus-color: transparent;
+}
+
+.tab *.tab-label {
+    -fx-rotate: 90;
+}
+
+.tab {
+    -fx-padding: 3em 0.5em 3em 0.5em;
+}
+
+.toolbar {
+    -fx-background-color: rgb(40,40,40);
+}
+
+.toolbar *.button{
+    -fx-background-color: rgb(20,150,220);
 }

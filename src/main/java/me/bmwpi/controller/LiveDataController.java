@@ -77,10 +77,6 @@ public class LiveDataController {
         coolTempVBox.getChildren().add(coolantGauge);
         coolantGauge.valueProperty().bind(model.coolantTempProperty());
 
-        /*Gauge oilTempGauge = PidGauges.getOilTempGauge();
-        oilTempVBox.getChildren().add(oilTempGauge);
-        oilTempGauge.valueProperty().bind(model.oilTempProperty());*/
-
         Gauge airInTempGauge = PidGauges.getIntakeTempGauge();
         oilTempVBox.getChildren().add(airInTempGauge);
         airInTempGauge.valueProperty().bind(model.airInTempProperty());
