@@ -7,12 +7,17 @@ import platform
 import sys
 
 # PID list
-pidList = [
-    '0C',  # RPM
-    '05',  # Coolant Temperature
-    '0F',  # Intake Air Temperature
-    '0B'  # Intake manifold pressure
-]
+supportedPidList = {
+    "rpm": '0C',        # RPM
+    "coolTemp": '05',   # Coolant Temperature
+    "airInTemp": '0F',  # Intake Air Temperature
+    "boost": '0B',      # Intake manifold pressure
+    "speed": '0D',      # Vehicle speed
+    "engLoad": '04',    # Engine load
+    "torque": '62'      # Engine torque output
+}
+
+usedPids = str.split(sys.argv[3], ',')
 HOST = "Localhost"
 PORT = 4000
 DELAY = float(sys.argv[1])
@@ -57,6 +62,16 @@ def getRPM(data):
     return "rpm:" + str(rpm)
 
 
+def getSpeed(data):
+    speed = int(data[4:], base=16)          # TODO test
+    return "speed:" + str(speed)
+
+
+def getEngineLoad(data):
+    load = int(data[4:], base=16)    # TODO test
+    return "engLoad:" + str(load)
+
+
 def getAirIntakeTemp(data):
     temp = int(data[4:], base=16) - 40
     return "airInTemp:" + str(temp)
@@ -72,13 +87,18 @@ def getIntakePressure(data):
     return "boost:" + str(boost)
 
 
+def getTorque(data):
+    torque = int(data[4:], base=16)   # TODO test
+    return "torque:" + str(torque)
+
+
 # Analise
 def parseData(response):
     size = int(response[6:8]) * 2  # get data size *2 to get bytes
     pid = response[8 + size - 2:10 + size - 2]  # pid is located at [address](6)+[length](2)+[data](size)-2
     response = response[18:]
-    print("Evaluable data: " + response)
-    print("Data size = " + str(size / 2))
+    # print("Evaluable data: " + response)
+    # print("Data size = " + str(size / 2))
     print("Requested PID: " + pid)
     data = response[8:8 + size]
     print("Actual data: " + data)
@@ -86,35 +106,40 @@ def parseData(response):
     value = ""
     if pid == '0c':
         value = getRPM(data)
+    elif pid == '0d':
+        value = getSpeed(data)
     elif pid == '0f':
         value = getAirIntakeTemp(data)
+    elif pid == '04':
+        value = getEngineLoad(data)
     elif pid == '05':
         value = getCoolantTemp(data)
     elif pid == '0b':
         value = getIntakePressure(data)
+    elif pid == '64':
+        value = getTorque(data)
     else:
         print("DATA: " + data)
     return value
 
 
+# Request main loop
 def mainLoop():
-    # Request main loop
-
-    if MODE == 1:
+    if MODE == 0:
         client_socket.connect((HOST, PORT))
         client_socket.send(b"HELLO\n")
         print("Client is ready")
         try:
             while True:
-                for pid in pidList:  # For each pid in the available pid List
-                    sendRequest(pid)  # Request Data
+                for pid in usedPids:  # For each pid in the available pid List
+                    sendRequest(supportedPidList[pid])  # Request Data
                     if ser.inWaiting():  # While time.sleep
                         readData = readResponse()  # Read incoming data
                     value = parseData(readData)
                     client_socket.send(str.encode(value + ":\n"))
         except KeyboardInterrupt:
             print("Exiting program")
-    elif MODE == 2:
+    elif MODE == 1:
         client_socket.connect((HOST, PORT))
         client_socket.send(b"HELLO\n")
         print("Client is ready")
@@ -132,13 +157,16 @@ def mainLoop():
                 val4 = "boost:" + str(random.randint(0, 300) * 0.01)
                 client_socket.send(str.encode(val4 + ":\n"))
                 time.sleep(DELAY)
+                val5 = "engLoad:" + str(random.randint(0, 100))
+                client_socket.send(str.encode(val5 + ":\n"))
+                time.sleep(DELAY)
         except KeyboardInterrupt:
             print("Exiting program")
-    elif MODE == 3:
+    elif MODE == 2:
         try:
             while True:
-                for pid in pidList:  # For each pid in the available pid List
-                    sendRequest(pid)  # Request Data
+                for pid in usedPids:  # For each pid in the available pid List
+                    sendRequest(supportedPidList[pid])  # Request Data
                     if ser.inWaiting():  # While time.sleep
                         readData = readResponse()  # Read incoming data
                     value = parseData(readData)
@@ -160,7 +188,7 @@ def mainLoop():
 
 def exit_handler():
     print("Closing socket and serial connection")
-    if MODE != 2:
+    if MODE != 1:
         ser.close()
     client_socket.close()
 
@@ -171,7 +199,7 @@ if __name__ == '__main__':
         SERIALNAME = 'COM1'
     else:
         SERIALNAME = '/dev/tty0'
-    if MODE != 2:
+    if MODE != 1:
         ser = serial.Serial(SERIALNAME, 9600, bytesize=8,
                             parity=serial.PARITY_EVEN,
                             stopbits=serial.STOPBITS_ONE)

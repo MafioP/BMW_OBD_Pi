@@ -19,6 +19,14 @@ public class PidModel {
             case "boost": Platform.runLater(() -> setBoostPressure(Double.parseDouble(value)));
                 break;
             case "airInTemp": Platform.runLater(() -> setAirInTemp(Integer.parseInt(value)));
+                break;
+            case "engLoad": Platform.runLater(() -> setEngineLoad(Double.parseDouble(value)));
+                break;
+            case "speed": Platform.runLater(() -> setSpeed(Integer.parseInt(value)));
+                break;
+            case "torque": Platform.runLater(() -> setTorque(Integer.parseInt(value)));
+                break;
+
             default:
         }
     }
@@ -71,7 +79,6 @@ public class PidModel {
         boostPressureProperty.set(value);
     }
 
-
     // airInTempProperty
     private final IntegerProperty airInTempProperty = new SimpleIntegerProperty(this, "airInTemp");
     public final IntegerProperty airInTempProperty() {
@@ -83,5 +90,42 @@ public class PidModel {
     public final void setAirInTemp(int value) {
         airInTempProperty.set(value);
     }
+
+    // engineLoadProperty
+    private final DoubleProperty engineLoadProperty = new SimpleDoubleProperty(this, "engineLoad");
+    public final DoubleProperty engineLoadProperty() {
+       return engineLoadProperty;
+    }
+    public final double getEngineLoad() {
+       return engineLoadProperty.get();
+    }
+    public final void setEngineLoad(double value) {
+        engineLoadProperty.set(value);
+    }
+
+    // speedProperty
+    private final IntegerProperty speedProperty = new SimpleIntegerProperty(this, "speed");
+    public final IntegerProperty speedProperty() {
+       return speedProperty;
+    }
+    public final int getSpeed() {
+       return speedProperty.get();
+    }
+    public final void setSpeed(int value) {
+        speedProperty.set(value);
+    }
+
+    // torqueProperty
+    private final IntegerProperty torqueProperty = new SimpleIntegerProperty(this, "torque");
+    public final IntegerProperty torqueProperty() {
+       return torqueProperty;
+    }
+    public final int getTorque() {
+       return torqueProperty.get();
+    }
+    public final void setTorque(int value) {
+        torqueProperty.set(value);
+    }
+
 
 }

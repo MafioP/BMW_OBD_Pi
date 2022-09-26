@@ -8,5 +8,6 @@ public enum SupportedValues {
     airInTemp,
     speed,
     throttlePos,
-    torque
+    torque,
+    engLoad
 }

@@ -1,20 +1,12 @@
 package me.bmwpi.controller;
 
 import java.io.IOException;
+
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import me.bmwpi.BMW_Pi_Main;
-import me.bmwpi.model.PidModel;
 
 public class MainPageController {
-
-    @FXML
-    private Label testLbl;
-
-    private String test;
-    public MainPageController() {
-        test = "5";
-    }
 
     @FXML
     private void switchToLiveData() throws IOException {
@@ -29,5 +21,10 @@ public class MainPageController {
     @FXML
     private void switchToSettings() throws IOException {
         BMW_Pi_Main.setRoot("settings");
+    }
+
+    @FXML
+    public void switchToDataLogger() throws IOException {
+        BMW_Pi_Main.setRoot("datalogger");
     }
 }

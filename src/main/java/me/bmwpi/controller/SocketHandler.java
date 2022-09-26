@@ -38,7 +38,7 @@ public class SocketHandler implements Runnable{
                 if (inputBufferedReader.ready()) {
                     in = inputBufferedReader.readLine();
                     parseData(in);
-                    System.out.println("Message from client: " + in);
+                    //System.out.println("Message from client: " + in);
                 }
             }
             outputBufferedWriter.write("exit");

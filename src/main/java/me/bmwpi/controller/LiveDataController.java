@@ -2,10 +2,13 @@ package me.bmwpi.controller;
 
 import eu.hansolo.medusa.Gauge;
 import javafx.fxml.FXML;
+import javafx.scene.chart.LineChart;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import me.bmwpi.BMW_Pi_Main;
 import me.bmwpi.model.PidGauges;
 import me.bmwpi.model.PidModel;
+import me.bmwpi.model.Settings;
 
 import java.io.IOException;
 
@@ -17,14 +20,7 @@ public class LiveDataController {
     private Thread scriptThread;
 
     @FXML
-    private VBox rpmVBox;
-    @FXML
-    private VBox coolTempVBox;
-    @FXML
-    private VBox oilTempVBox;
-    @FXML
-    private VBox boostVBox;
-
+    private FlowPane gaugePane;
 
     public void initialize() {
         System.out.println("Controller created");
@@ -69,22 +65,49 @@ public class LiveDataController {
     }
 
     public void setGauges() {
-        Gauge rpmGauge = PidGauges.getRpmGauge();
-        rpmVBox.getChildren().add(rpmGauge);
-        rpmGauge.valueProperty().bind(model.rpmProperty());
+        Settings.getUsedValues().forEach( e -> {
+            switch (e){
+                case "rpm":
+                    Gauge rpmGauge = PidGauges.getRpmGauge();
+                    gaugePane.getChildren().add(rpmGauge);
+                    rpmGauge.valueProperty().bind(model.rpmProperty());
+                    break;
+                case "coolTemp":
+                    Gauge coolantGauge = PidGauges.getCoolantTempGauge();
+                    gaugePane.getChildren().add(coolantGauge);
+                    coolantGauge.valueProperty().bind(model.coolantTempProperty());
+                    break;
+                case "airInTemp":
+                    Gauge airInTempGauge = PidGauges.getIntakeTempGauge();
+                    gaugePane.getChildren().add(airInTempGauge);
+                    airInTempGauge.valueProperty().bind(model.airInTempProperty());
+                    break;
+                case "boost":
+                    Gauge boostGauge = PidGauges.getBoostGauge();
+                    gaugePane.getChildren().add(boostGauge);
+                    boostGauge.valueProperty().bind(model.boostPressureProperty());
+                    break;
+                case "engLoad":
+                    Gauge loadGauge = PidGauges.getEngineLoadGauge();
+                    gaugePane.getChildren().add(loadGauge);
+                    loadGauge.valueProperty().bind(model.engineLoadProperty());
+                    break;
+                case "torque":
+                    Gauge torqueGauge = PidGauges.getTorqueGauge();
+                    gaugePane.getChildren().add(torqueGauge);
+                    torqueGauge.valueProperty().bind(model.torqueProperty());
+                    break;
+                case "speed":
+                    Gauge speedGauge = PidGauges.getSpeedGauge();
+                    gaugePane.getChildren().add(speedGauge);
+                    speedGauge.valueProperty().bind(model.speedProperty());
+                    break;
+            }
+        });
 
-        Gauge coolantGauge = PidGauges.getCoolantTempGauge();
-        coolTempVBox.getChildren().add(coolantGauge);
-        coolantGauge.valueProperty().bind(model.coolantTempProperty());
 
-        Gauge airInTempGauge = PidGauges.getIntakeTempGauge();
-        oilTempVBox.getChildren().add(airInTempGauge);
-        airInTempGauge.valueProperty().bind(model.airInTempProperty());
 
-        Gauge boostGauge = PidGauges.getBoostGauge();
-        boostVBox.getChildren().add(boostGauge);
-        boostGauge.valueProperty().bind(model.boostPressureProperty());
+
+
     }
-
-
 }

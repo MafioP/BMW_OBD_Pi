@@ -7,9 +7,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Settings {
-    private static int MODE = 2;
-    private static double DELAY = 0.5;
-    private static final ArrayList<String> usedValues = new ArrayList<>(Arrays.asList("rpm", "coolTemp", "airInTemp", "boost"));
+    private static int MODE = 0;
+    private static double DELAY = 0.1;
+    private static final int GAUGE_SIZE = 250;
+    private static final ArrayList<String> usedValues = new ArrayList<>(Arrays.asList("rpm", "speed", "torque", "engLoad"));
 
 
     public static double getDELAY() {
@@ -28,8 +29,21 @@ public class Settings {
         Settings.MODE = MODE;
     }
 
-    public static ObservableList<String> getUsedValues() {
-        return FXCollections.observableList(usedValues);
+    public static int getGaugeSize() {
+        return GAUGE_SIZE;
+    }
+
+    public static ArrayList<String> getUsedValues() {
+        return usedValues;
+    }
+
+    public static String getUsedvaluesAsString() {
+        String val = "";
+        for (String value : usedValues) {
+            val += value + ",";
+        }
+        val = val.substring(0, val.length()-1);
+        return val;
     }
 
     public static void addUsedValue(String value) {
