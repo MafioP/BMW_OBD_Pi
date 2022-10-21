@@ -20,5 +20,5 @@ Values that can be read:
 
 # Display
 
-<p>Currently the data is displayed using HanSolo´s Medusa gauges</p> 
-![image](https://user-images.githubusercontent.com/42208309/197298244-58044f89-d5b2-4cc3-bee7-1058de372b64.png)
+<p>Currently the data is displayed using HanSolo´s Medusa gauges</p>
+![image](https://user-images.githubusercontent.com/42208309/197298973-6567626b-fe51-4b3d-8883-defa99c8a6b3.png)
