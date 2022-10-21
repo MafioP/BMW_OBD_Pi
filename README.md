@@ -4,19 +4,19 @@
 
 Values that can be read:
 
-> - Engine RPM
+- Engine RPM
 
-> - Coolant Temperature
+- Coolant Temperature
 
-> - Air intake Temperature
+- Air intake Temperature
 
-> - Boost
+- Boost
 
-> - Vehicle speed
+- Vehicle speed
 
-> - Engine Load
+- Engine Load
 
-> - Many others if you guess the hex code of the wanted PID
+- Many others if you guess the hex code of the wanted PID
 
 # Display
 
