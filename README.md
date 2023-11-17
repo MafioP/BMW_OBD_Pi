@@ -1,6 +1,6 @@
-# BMW_Pi
+# BMW_OBD_Pi
 
-<p>A simple application to communicate and read values from the car´s engine and display in a small Raspberry Pi powered screen.</p>
+<p>A simple application to communicate and read values from the car´s engine through the OBD port and display in a small Raspberry Pi powered screen.</p>
 
 Values that can be read:
 
